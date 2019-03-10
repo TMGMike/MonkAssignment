@@ -1,4 +1,4 @@
-# MonkAssignment
+# Monk Assignment
 ## Object-Oriented Systems Development
 My C++ Assignment for the Object-Oriented Systems Development module. 
 
