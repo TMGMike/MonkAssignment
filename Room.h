@@ -7,19 +7,26 @@
 #define MONKASSIGNMENT_ROOM_H
 
 #include "Controllers/MonsterController.h"
+#include "Controllers/PlayerController.h"
+
 using namespace std;
+
 class Room {
-protected:
+public:
     Room();
-    Room(Room *);
+    Room(Room*);
     virtual void generate(){};
     virtual void setEnteredFrom(Room *previousRoom); // Set the exit to the previous room.
     virtual void render(){};
+    virtual void render(string){};
+    virtual void render(PlayerController*){};
     Room *getLeftRoom();
     Room *getRightRoom();
     void setLeftRoom(Room *left);
     void setRightRoom(Room *right);
-
+    bool isRoomComplete = false; // If the room's actions have been completed and ready to generate the next.
+    virtual bool isTreasureRoom () { return false; }
+    virtual bool isMonsterAlive();
 private:
     Room* enteredFrom;
     Room* leftDoor;

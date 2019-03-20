@@ -24,7 +24,6 @@ void LogController::log(string log) {
  * As seen in the LogController.h Header File, if no parameter is given, it defaults to false and calls this method.
  */
 void LogController::clearLogs(bool deleteFile) {
-    // TODO implement clear logs
     if(!deleteFile) {
         std::ofstream ofs;
         ofs.open("game_events.log", std::ofstream::out | std::ofstream::trunc);

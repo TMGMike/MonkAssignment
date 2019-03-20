@@ -4,9 +4,9 @@
 
 #include "PlayerModel.h"
 
-PlayerModel::PlayerModel(int baseHealth, int baseDamage, const string &playerName, const string &description) {
+PlayerModel::PlayerModel(int baseDamage, const string &playerName, const string &description) {
     this->name = playerName;
-    this->health = baseHealth;
+    this->health = BASE_HEALTH;
     this->damage = baseDamage;
     this->description = description;
 }
@@ -25,4 +25,20 @@ const string &PlayerModel::getDescription() const {
 
 void PlayerModel::setDescription(const string &description) {
     PlayerModel::description = description;
+}
+
+int PlayerModel::getHealth() {
+    return this->health;
+}
+
+void PlayerModel::setHealth(int value) {
+    this->health = value;
+}
+
+int PlayerModel::getDamage() {
+    return this->damage;
+}
+
+int PlayerModel::getBase() {
+    return BASE_HEALTH;
 }

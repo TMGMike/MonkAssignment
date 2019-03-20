@@ -7,7 +7,6 @@
 
 // Controller Dependencies
 #include "MonsterController.h"
-#include "RoomController.h"
 #include "LogController.h"
 
 // Model Dependencies
@@ -16,19 +15,32 @@
 
 // Room Dependencies
 #include "../MonsterRoom.h"
+#include "../EmptyRoom.h"
+#include "../TreasureRoom.h"
+#include "RandomController.h"
 
 class DungeonController {
 public:
     DungeonController(string playerName, string description);
-    void TreasureCollected();
+    void increaseRoomCount() { roomsExplored ++; }
+    int getRoomCount() { return roomsExplored; }
+    void GenerateRoom(Room*);
+    void BeginCombat();
+    int rngRoomId();
 private:
-    RoomController* roomController;
     MonsterController* monsterController;
-    PlayerModel* playerModel;
+    PlayerController* playerController;
     MonsterModel* monsterModel;
     LogController* logController;
     MonsterRoom* monsterRoom;
-};
+    RandomController* randomController;
+    int roomsExplored;
 
+    int treasureChance  = 5;
+    int emptyChance     = 33;
+    int monsterChance   = 62;
+
+    Room* currentRoom;
+};
 
 #endif //MONKASSIGNMENT_DUNGEONCONTROLLER_H

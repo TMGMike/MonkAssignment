@@ -4,8 +4,8 @@
 
 #include "Room.h"
 
-Room::Room(Room *from) {
-    setEnteredFrom(from);
+Room::Room(Room *sender) {
+    setEnteredFrom(sender);
 }
 
 void Room::setEnteredFrom(Room *previousRoom) {

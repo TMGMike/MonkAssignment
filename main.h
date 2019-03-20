@@ -9,7 +9,7 @@
 #include "Controllers/DungeonController.h"
 using namespace std;
 
-class MainDungeon {
+class MainView {
 public:
     void startGame(string playerName, string description);
 

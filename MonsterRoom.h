@@ -13,7 +13,8 @@ public:
     MonsterRoom(Room*);
     void generate() override;
     MonsterController* getMonster();
-    void render() override;
+    void render(PlayerController*) override;
+    bool isMonsterAlive() override;
 private:
     MonsterController *monster;
 };
