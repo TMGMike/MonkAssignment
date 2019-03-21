@@ -11,9 +11,9 @@ class TreasureRoom : public Room {
 public:
     TreasureRoom(Room *);
 
-    void generate() override;
+    void Generate() override;
 
-    void render(string) override;
+    void Render(string) override;
 
     bool isTreasureRoom() override { return true; }; // Tells the manager of the Room class that this is the treasure subclass.
 

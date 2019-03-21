@@ -91,43 +91,6 @@ bool PlayerController::tryAction() {
     return (actionInt == 1);
 }
 
-/**
- * The combat attack behaviour for the player. If the action is successful, the player will damage the monster.
- * If the action is unsuccessful, the Monk will deal no damage.
- * @param monster The Monster's Controller object currently in combat against the player.
- */
-void PlayerController::tryFight(MonsterController *monster) {
-    if(tryAction()) {
-        cout << getPlayerName() << " the Monk attacks the " << monster->getMonsterName() << "!" << endl;
-        monster->subtractMonsterHealth(getPlayerDamage());
-    }
-    else {
-        cout << "The " << monster->getMonsterName() << " dodged " << getPlayerName() << "'s attack!" << endl;
-    }
-}
-
-/**
- * The combat defend behaviour for the player. If the action is successful, the player will restore 1 HP.
- * If the action is unsuccessful, the player will gain no health points, and the monster will be able to attack.
- */
-void PlayerController::tryDefend(MonsterController *monster) {
-    if(tryAction()) {
-        cout << endl;
-        cout << getPlayerName() << " the Monk defends themselves against the monster, restoring 1 HP." << endl;
-
-        // If the player does not have max health, increase it by 1. Otherwise, move on.
-         if(getPlayerHealth() != getPlayerBaseHealth()) setPlayerHealth(getPlayerHealth() + 1);
-    }
-    else {
-        cout << endl;
-        cout << getPlayerName() << " the Monk failed to defend against the " << monster->getMonsterName() << endl;
-        cout << "The " << monster->getMonsterName() << " dealt ";
-        printf("%d damage!\n", monster->getMonsterAttackPoints());
-
-        subtractPlayerHealth(monster->getMonsterAttackPoints());
-    }
-}
-
 void PlayerController::setPlayerProtection(bool toggle) {
     player->hasProtection = toggle;
 }

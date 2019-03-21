@@ -20,8 +20,6 @@ public:
     int getPlayerBaseHealth();
     int getPlayerDamage();
     bool tryAction();
-    void tryFight(MonsterController*);
-    void tryDefend(MonsterController*);
     bool playerHasProtection();
     void Die();
     void setPlayerProtection(bool);

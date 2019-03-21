@@ -11,10 +11,21 @@
 class MonsterRoom : public Room {
 public:
     MonsterRoom(Room*);
-    void generate() override;
+    void Generate(int) override;
     MonsterController* getMonster();
-    void render(PlayerController*) override;
-    bool isMonsterAlive() override;
+    void Render() override;
+    bool isMonsterAlive();
+
+    // Methods from the MonsterController
+    int getMonsterHealth();
+    int getMonsterBaseHealth();
+    string getMonsterName();
+    string getMonsterNoise();
+    void setMonsterHealth(int value);
+    void subtractMonsterHealth(int value);
+    int getMonsterAttackPoints();
+    bool monsterTryAction();
+    int monsterActionToPerform();
 private:
     MonsterController *monster;
 };

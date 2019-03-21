@@ -11,12 +11,10 @@
 class EmptyRoom : public Room {
 public:
     EmptyRoom(Room*);
-    void generate() override;
+    void Generate(int) override;
     bool hasPrayed; // Has the player prayed in the room already? Default to false.
-    void pray(PlayerController* player);
     bool hasItem;
-    int rngItemGen(int,int);
-    void render(PlayerController*) override;
+    void Render() override;
 };
 
 #endif //MONKASSIGNMENT_EMPTYROOM_H

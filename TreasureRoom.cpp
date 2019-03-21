@@ -7,11 +7,11 @@
 
 TreasureRoom::TreasureRoom(Room *room) : Room(room){  }
 
-void TreasureRoom::generate() {
+void TreasureRoom::Generate() {
     isTreasureCollected = false;
 }
 
-void TreasureRoom::render(string playerName) {
+void TreasureRoom::Render(string playerName) {
     string instruction = "1";
     cout << "You enter a dark room. As you walk forward, you can smell a strange scent coming from in front of you. \n "
             "Your stomach rumbles. Your inside, ready. This is it. It's the Treasure Room!\n \n Right in front of you, "

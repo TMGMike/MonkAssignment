@@ -15,18 +15,30 @@ class Room {
 public:
     Room();
     Room(Room*);
-    virtual void generate(){};
+    virtual void Generate(){};
     virtual void setEnteredFrom(Room *previousRoom); // Set the exit to the previous room.
-    virtual void render(){};
-    virtual void render(string){};
-    virtual void render(PlayerController*){};
-    Room *getLeftRoom();
-    Room *getRightRoom();
+    virtual void Render(){};
+    virtual void Render(string){};
+    virtual void Generate(int){};
     void setLeftRoom(Room *left);
     void setRightRoom(Room *right);
-    bool isRoomComplete = false; // If the room's actions have been completed and ready to generate the next.
+    Room *getLeftRoom();
+    Room *getRightRoom();
+    bool isRoomComplete = false; // If the room's actions have been completed and ready to Generate the next.
     virtual bool isTreasureRoom () { return false; }
-    virtual bool isMonsterAlive();
+
+    /*virtual bool isMonsterAlive();
+
+    // Methods from the MonsterController
+    virtual int getMonsterHealth();
+    virtual int getMonsterBaseHealth();
+    virtual string getMonsterName();
+    virtual string getMonsterNoise();
+    virtual void setMonsterHealth(int value);
+    virtual void subtractMonsterHealth(int value);
+    virtual int getMonsterAttackPoints();
+    virtual bool monsterTryAction();
+    virtual int monsterActionToPerform();*/
 private:
     Room* enteredFrom;
     Room* leftDoor;

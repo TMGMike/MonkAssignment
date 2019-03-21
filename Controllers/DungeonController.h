@@ -24,9 +24,13 @@ public:
     DungeonController(string playerName, string description);
     void increaseRoomCount() { roomsExplored ++; }
     int getRoomCount() { return roomsExplored; }
-    void GenerateRoom(Room*);
+    void GenerateRoom(Room*, string);
     void BeginCombat();
     int rngRoomId();
+    void ExploreEmptyRoom();
+    void MoveRoom();
+    void CombatTryAttack(MonsterRoom*, int);
+    void CombatTryDefend(MonsterRoom*, int);
 private:
     MonsterController* monsterController;
     PlayerController* playerController;
@@ -34,7 +38,7 @@ private:
     LogController* logController;
     MonsterRoom* monsterRoom;
     RandomController* randomController;
-    int roomsExplored;
+    int roomsExplored = 0;
 
     int treasureChance  = 5;
     int emptyChance     = 33;
