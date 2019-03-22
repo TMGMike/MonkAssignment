@@ -20,10 +20,14 @@ public:
     virtual void Render(){};
     virtual void Render(string){};
     virtual void Generate(int){};
-    void setLeftRoom(Room *left);
-    void setRightRoom(Room *right);
-    Room *getLeftRoom();
-    Room *getRightRoom();
+
+    virtual void setLeftRoom(Room *left);
+
+    virtual void setRightRoom(Room *right);
+
+    virtual Room *getLeftRoom();
+
+    virtual Room *getRightRoom();
     bool isRoomComplete = false; // If the room's actions have been completed and ready to Generate the next.
     virtual bool isTreasureRoom () { return false; }
 

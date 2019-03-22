@@ -4,6 +4,7 @@
 #include <iostream>
 #include <random>
 #include "DungeonController.h"
+#include "../PuzzleRoom.h"
 
 DungeonController::DungeonController(string playerName, string description) {
     playerController = new PlayerController(3, playerName, description);
@@ -21,8 +22,6 @@ DungeonController::DungeonController(string playerName, string description) {
     logController->log("Generated Empty spawn room.");
     ExploreEmptyRoom();
 }
-
-
 
 void DungeonController::GenerateRoom(Room *sender, string direction) {
     roomsExplored += 1;
@@ -53,44 +52,57 @@ void DungeonController::GenerateRoom(Room *sender, string direction) {
     Room* newRoom;
 
     logController->log("Generating new room....");
-    switch (roomId){
+    switch (roomId) {
         default:
         case (0):
             newRoom = new EmptyRoom(sender);
             newRoom->Generate(randomController->getRandomIndex(1, 100));
             newRoom->Render();
 
-            if(direction == "0") currentRoom->setLeftRoom(newRoom);
-            else                 currentRoom->setRightRoom(newRoom);
+            if (direction == "0") currentRoom->setLeftRoom(newRoom);
+            else currentRoom->setRightRoom(newRoom);
 
             currentRoom = newRoom;
             logController->log("Generated new Empty room");
             ExploreEmptyRoom();
             break;
-        case (1):
+        case (1): {
             newRoom = new MonsterRoom(sender);
             newRoom->Generate(randomController->getRandomIndex(0, 2));
             newRoom->Render();
 
-            if(direction == "0") currentRoom->setLeftRoom(newRoom);
-            else                 currentRoom->setRightRoom(newRoom);
+            if (direction == "0") currentRoom->setLeftRoom(newRoom);
+            else currentRoom->setRightRoom(newRoom);
 
             currentRoom = newRoom;
             logController->log("Generated new Monster room");
             BeginCombat();
             break;
-        case(2):
-            TreasureRoom* treasureRoom = new TreasureRoom(sender);
+        }
+        case (2): {
+            TreasureRoom *treasureRoom = new TreasureRoom(sender);
             treasureRoom->Generate();
 
-            if(direction == "0") currentRoom->setLeftRoom(treasureRoom);
-            else                 currentRoom->setRightRoom(treasureRoom);
+            if (direction == "0") currentRoom->setLeftRoom(treasureRoom);
+            else currentRoom->setRightRoom(treasureRoom);
 
             currentRoom = treasureRoom;
             treasureRoom->Render(playerController->getPlayerName());
             logController->log("Generated Treasure room!");
-
             break;
+        }
+        case (3): {
+            PuzzleRoom *puzzleRoom = new PuzzleRoom(sender);
+            puzzleRoom->Generate();
+            puzzleRoom->Render(playerController->getPlayerName());
+            currentRoom = puzzleRoom;
+
+            logController->log("Generated Puzzle room!");
+            int puzzleId = randomController->getRandomIndex(0, (puzzleRoom->getPuzzleSize() - 1) );
+            puzzleRoom->setPuzzleId(puzzleId);
+            BeginPuzzle();
+            break;
+        }
     }
 }
 
@@ -99,6 +111,7 @@ void DungeonController::GenerateRoom(Room *sender, string direction) {
  * 0 = Empty Room
  * 1 = Monster Room
  * 2 = Treasure Room
+ * 3 = Puzzle Room
  *
  * @return The room ID which was generated here.
  */
@@ -107,6 +120,9 @@ int DungeonController::rngRoomId() {
     int roomChance = randomController->getRandomIndex(1,100);
     if(roomChance < treasureChance) {
         return 2;
+    }
+    else if (roomChance < puzzleChance) {
+        return 3;
     }
     else if (roomChance < emptyChance) {
         return 0;
@@ -255,7 +271,7 @@ void DungeonController::CombatTryAttack(MonsterRoom* room, int turn) {
     else {
         if(room->monsterTryAction()) {
             if(playerController->playerHasProtection()) {
-                cout << "\n The " << room->getMonsterName() << "tried to attack, but the Staff of Protection blocked the attack from the " << room->getMonsterName() << "!" << endl;
+                cout << "\n The " << room->getMonsterName() << " tried to attack, but the Staff of Protection blocked the attack from the " << room->getMonsterName() << "!" << endl;
                 logController->log("ATTACK BLOCKED: Player had Staff of Protection item");
                 playerController->setPlayerProtection(false);
             } else {
@@ -309,5 +325,49 @@ void DungeonController::CombatTryDefend(MonsterRoom* room, int turn) {
             logController->log("DEFEND FAILED: Monster failed to defend itself");
         }
     }
+}
+
+void DungeonController::BeginPuzzle() {
+    cout << "There seems to be spikes in the floor. If the answer is incorrect, face a painful punishment. If the answer is correct, accept a generous reward." << endl;
+    PuzzleRoom* room = (PuzzleRoom*) currentRoom;
+
+    string instruction = "_";
+
+    while(instruction != "0" && instruction != "1") {
+        cout << "Does " << playerController->getPlayerName() << " the Monk accept the challenge? \n [0] = Yes \n [1] = No" << endl;
+        cin >> instruction;
+        if (instruction != "0" && instruction != "1") cout << playerController->getPlayerName() << " realised this wasn't an option!";
+    }
+
+    if(instruction == "0") {
+        logController->log("The player chose to answer the question. The question was: ");
+        logController->log(room->getPuzzle());
+        cout << "The Egyptian writing reads: \n" << endl;
+        cout << room->getPuzzle() << endl;
+
+        logController->log("The answer is: ");
+        logController->log(room->getPuzzleAnswer());
+        string answer;
+        cin >> answer;
+
+        if(answer == room->getPuzzleAnswer()) {
+            cout << "The walls begin to change. The symbols fade away. " << playerController->getPlayerName() << " answered correctly!" << endl;
+            cout << "As the symbols fade, a hole in the wall reveals a Staff of Protection. " << playerController->getPlayerName() << " picks it up!" << endl;
+            cout << "During the next battle, the first attack from a monster will be blocked!" << endl;
+
+            logController->log("The answer was correct");
+            playerController->setPlayerProtection(true);
+        }
+        else {
+            playerController->subtractPlayerHealth(5);
+            cout << "The walls begin to change. The symbols fade away. The floor begins to shake. " << playerController->getPlayerName() << " answered incorrectly!" << endl;
+            printf("The Monk loses 5 HP for their mistake. [%d / %d] \n", playerController->getPlayerHealth(), playerController->getPlayerBaseHealth());
+            logController->log("Player answered incorrectly - subtracting 5 HP from the player");
+        }
+    }
+
+    cout << playerController->getPlayerName() << " moves on to the next room..." << endl;
+
+    MoveRoom();
 }
 

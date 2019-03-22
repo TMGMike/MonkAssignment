@@ -26,6 +26,7 @@ public:
     int getRoomCount() { return roomsExplored; }
     void GenerateRoom(Room*, string);
     void BeginCombat();
+    void BeginPuzzle();
     int rngRoomId();
     void ExploreEmptyRoom();
     void MoveRoom();
@@ -41,8 +42,9 @@ private:
     int roomsExplored = 0;
 
     int treasureChance  = 5;
-    int emptyChance     = 33;
-    int monsterChance   = 62;
+    int emptyChance     = 27;
+    int monsterChance   = 58;
+    int puzzleChance    = 10;
 
     Room* currentRoom;
 };
